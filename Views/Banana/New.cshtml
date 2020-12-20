@@ -1,0 +1,82 @@
+<nav class="navbar navbar-expand-md navbar-light bg-warning">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/home">Fit Bananas</a>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/new">New</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/settings">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/signout">Sign out</a>
+                </li>
+            </ul>
+            <div class="navbar-nav">
+                <a href="https://www.strava.com">
+                    <img src="/img/api_logo_pwrdBy_strava_horiz_white.svg" height="40" class="d-inline-block align-top">
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="row justify-content-center">
+        <h2 class="m-5 text-center">Add a new challenge</h2>
+    </div>
+    <form action="" method="post">
+        <div class="row justify-content-center mb-3">
+            <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-warning" for="btnradio1">Distance</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <label class="btn btn-outline-warning" for="btnradio3">Elevation Gain</label>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-auto">
+                <select name="" id="" class="form-select">
+                    <option value="" selected disabled hidden>Select Challenge:</option>
+                    <option value="">Pacific Crest Trail</option>
+                </select>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <label class="mb-2" for="">Activities to Include:</label>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-auto">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Cycling
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Running
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <button type="submit" class="btn btn-warning">Add Challenge</button>
+            </div>
+        </div>
+
+    </form>
+</main>

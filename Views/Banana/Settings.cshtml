@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-md navbar-light bg-warning">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/home">Fit Bananas</a>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/new">New</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/settings">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/signout">Sign Out</a>
+                </li>
+            </ul>
+            <div class="navbar-nav">
+                <a href="https://www.strava.com">
+                    <img src="/img/api_logo_pwrdBy_strava_horiz_white.svg" height="40" class="d-inline-block align-top">
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="row justify-content-center">
+        <h2 class="m-5 text-center">Settings</h2>
+    </div>
+    <form action="" method="post" class="rom justify-content/-center mb-3">
+        <div class="row justify-content-center mb-3">
+            <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="distance" id="miles" autocomplete="off" checked>
+                <label class="btn btn-outline-warning" for="btnradio1">Miles</label>
+
+                <input type="radio" class="btn-check" name="distance" id="kilometers" autocomplete="off">
+                <label class="btn btn-outline-warning" for="btnradio3">Kilometers</label>
+            </div>
+        </div>
+    </form>
+    <form>
+
+        <div class="row justify-content-center mb-3">
+            <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="time" id="twelveHour" autocomplete="off" checked>
+                <label class="btn btn-outline-warning" for="btnradio1">12h</label>
+
+                <input type="radio" class="btn-check" name="time" id="twentyFourHour" autocomplete="off">
+                <label class="btn btn-outline-warning" for="btnradio3">24h</label>
+            </div>
+        </div>
+    </form>
+    <form>
+        <div class="row justify-content-center mb-3">
+            <div class="col-auto">
+                <select name="" id="" class="form-select">
+                    <!--add option for each challenge user has active-->
+                    <option value="" selected>Mt. Everest</option>
+                    <option value="">Pacific Crest Trail</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-warning">Remove</button>
+            </div>
+        </div>
+    </form>
+    <form action="">
+        <div class="row justify-content-center m-5">
+            <div class="col-auto">
+                <button type="submit" class="btn btn-dark text-danger">Purge Account Data</button>
+            </div>
+        </div>
+    </form>
+</main>

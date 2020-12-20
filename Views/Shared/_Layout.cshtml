@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fit Bananas</title>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+</head>
+<body>
+    @RenderBody()
+
+    <footer class=" my-5 text-nowrap">
+        <div class="d-flex justify-content-center">
+            <p>View our <a href="/privacy" class="col-auto text-decoration-none">Privacy Policy.</a>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="https://www.strava.com">
+                <img class="img-fluid" src="/img/GitHub-Mark-32px.png" alt="Strava logo">
+            </a>
+        </div>
+    </footer>
+
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
