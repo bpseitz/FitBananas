@@ -14,8 +14,6 @@ namespace FitBananas.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        public int AthleteStatsId { get; set; }
-
         public AthleteStats AthletesStats { get; set; }
 
         public List<AthleteChallenge> Challenges { get; set; }

@@ -12,12 +12,12 @@ namespace FitBananas.Controllers
     public class BananaController : Controller
     {
         
-        // private readonly DbContext _context;
+        private readonly BananaContext _context;
 
-        // public BananaController(MyContext context)
-        // {
-        //     _context = context;
-        // }
+        public BananaController(BananaContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet("home")]
         public IActionResult Home()
