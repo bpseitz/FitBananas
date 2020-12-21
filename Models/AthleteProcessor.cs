@@ -8,7 +8,7 @@ namespace FitBananas.Models
     {
         public static async Task<Athlete> LoadAthleteInformation()
         {
-            string url = "https://www.strava.com/api/v3/athlete?access_token=7deb301eecc10dcce1b2227652ab3dd246e0e0c3";
+            string url = $"https://www.strava.com/api/v3/athlete?access_token={AccessToken.current}";
 
             using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url))
             {
