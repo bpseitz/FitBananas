@@ -22,6 +22,15 @@ namespace FitBananas.Controllers
         [HttpGet("home")]
         public IActionResult Home()
         {
+            string test = loadAthleteInfo().Result.FirstName;
+            ViewBag.Test = test;
+            // if (test == null)
+            // {
+            //     Console.WriteLine("null");
+            // }
+            // else {
+            //     Console.WriteLine(test);
+            // }
             return View();
         }
 
@@ -42,6 +51,11 @@ namespace FitBananas.Controllers
         {
             return RedirectToAction("Index", "Home");
         }
-      
+
+        public static async Task<Athlete> loadAthleteInfo()
+        {
+            return await AthleteProcessor.LoadAthleteInformation();
+            
+        }
     }
 }
