@@ -33,7 +33,6 @@
     <div class="row justify-content-center">
         <h2 class="m-5 text-center">Add a new challenge</h2>
     </div>
-    <form action="" method="post">
         <div class="row justify-content-center mb-3">
             <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="challengeType" value="Run" id="run" autocomplete="off" checked>
@@ -55,11 +54,15 @@
                 <label class="btn btn-outline-warning" for="btnradio3">Elevation Gain</label>
             </div>
         </div>
+    <form action="/challenge/accept" method="post">
         <div class="row justify-content-center mb-3">
             <div class="col-auto">
-                <select name="" id="" class="form-select">
+                <select name="ChallengeId" id="" class="form-select">
                     <option value="" selected disabled hidden>Select Challenge:</option>
-                    <option value="">Pacific Crest Trail</option>
+                    @foreach (var challenge in @Model.AllChallenges)
+                    {
+                        <option value="@challenge.ChallengeId">@challenge.Title</option>
+                    }
                 </select>
             </div>
         </div>
@@ -68,6 +71,5 @@
                 <button type="submit" class="btn btn-warning">Add Challenge</button>
             </div>
         </div>
-
     </form>
 </main>

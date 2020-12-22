@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FitBananas.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace FitBananas.Controllers
 {
@@ -15,11 +16,11 @@ namespace FitBananas.Controllers
         
         private readonly BananaContext _context;
 
-        // hardcoding userid temporarily
+        // hardcoding stravaId temporarily
         private static int bryanId = 56614892;
         private static int treyId = 24299518;
 
-        private readonly int userId = bryanId;
+        private readonly int stravaId = treyId;
 
         public BananaController(BananaContext context)
         {
@@ -29,15 +30,15 @@ namespace FitBananas.Controllers
         [HttpGet("home")]
         public IActionResult Home()
         {
-            HomeViewModel homeViewModel = new HomeViewModel(_context, userId);
+            HomeViewModel homeViewModel = new HomeViewModel(_context, stravaId);
             return View(homeViewModel);
         }
 
         [HttpGet("new")]
         public IActionResult New()
         {
-            NewChallengeViewModel viewModel = new NewChallengeViewModel(_context, userId);
-            return View();
+            NewChallengeViewModel viewModel = new NewChallengeViewModel(_context, stravaId);
+            return View(viewModel);
         }
 
         [HttpGet("settings")]
@@ -52,6 +53,16 @@ namespace FitBananas.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost("challenge/accept")]
+        public IActionResult AcceptChallenge(int challengeId)
+        {
+            AthleteChallenge acceptedChallenge = new AthleteChallenge();
+            acceptedChallenge.AthleteId = (int)HttpContext.Session.GetInt32("UserId");
+            acceptedChallenge.ChallengeId = challengeId;
+            _context.Add(acceptedChallenge);
+            _context.SaveChanges();
+            return RedirectToAction("Home");
+        }
 
         [HttpGet("strava/auth")]
         public IActionResult AuthorizeStrava()
@@ -114,7 +125,7 @@ namespace FitBananas.Controllers
 
                 _context.SaveChanges();
             }
-
+            HttpContext.Session.SetInt32("UserId", dbAthlete.AthleteId);
             return RedirectToAction("Home");
         }
         public static async Task<Athlete> loadAthleteInfo()

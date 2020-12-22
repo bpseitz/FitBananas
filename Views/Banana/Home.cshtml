@@ -5,7 +5,7 @@
     BikeTotal bikeTotal = Model.CurrentStats.YTD_Ride_Totals;
     RunTotal runTotal = Model.CurrentStats.YTD_Run_Totals;
     SwimTotal swimTotal = Model.CurrentStats.YTD_Swim_Totals;
-    
+    int daysRemaining = Model.DaysRemaining;
 }
 
 <nav class="navbar navbar-expand-md navbar-light bg-warning">
@@ -44,7 +44,7 @@
             <h1>@name's 2021 Challenges</h1>
         </div>
         <div class="col-auto">
-            <h2>340 days, 7 hours remaining</h2>
+            <h2 id="daysRemaining"></h2>
         </div>
     </div>
     @if (challenges.Count > 0)
@@ -68,15 +68,26 @@
                         <p class="text-center mb-0">@total of @challenge.Goal feet</p>
                         <div class="progress mb-3">
                             @{
-                                int progress = total / challenge.Goal;
+                                int progress;
+                                if(total >= challenge.Goal)
+                                {
+                                    progress = 100;
+                                }
+                                else
+                                {
+                                    progress = (int)((float)total / challenge.Goal*100);
+                                }
+                                int averageGain = total / DateTime.Now.DayOfYear;
+                                int averageGainToComplete = (challenge.Goal - total) / daysRemaining;
+                                if(averageGainToComplete < 0) { averageGainToComplete = 0; }
                             }
                             <div class="progress-bar 
                                 progress-bar-striped bg-danger" role="progressbar" style='width: @($"{progress}%")' aria-valuenow='@($"{progress}%")'
                                 aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <p class="mb-1">@(challenge.Goal - progress) feet behind schedule!</p>
-                        <p class="mb-1">Average Daily Elevation Gain: 109 feet</p>
-                        <p>Average Daliy Elevation Gain to completion: 44 feet</p>
+                        <p class="mb-1">Average Daily Elevation Gain: @averageGain feet</p>
+                        <p>Average Daliy Elevation Gain to completion: @averageGainToComplete feet</p>
                     </div>
                     <div class="col d-none d-md-block">
                         <img class="img-fluid"
@@ -99,3 +110,6 @@
         </div>
     }
 </main>
+<script>
+    
+</script>

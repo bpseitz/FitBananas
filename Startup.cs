@@ -27,6 +27,7 @@ namespace FitBananas
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BananaContext>(options => options.UseMySql (Configuration["DBInfo:ConnectionString"]));
+            services.AddSession();
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
         }
@@ -46,6 +47,7 @@ namespace FitBananas
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseMvc();
 
             // app.UseRouting();

@@ -6,10 +6,10 @@ namespace FitBananas.Models
 {
     public class NewChallengeViewModel
     {
-        public List<Challenge> allChallenges { get; set; }
+        public List<Challenge> AllChallenges { get; set; }
         public NewChallengeViewModel(BananaContext context, int athleteId)
         {
-            allChallenges = context.Challenges
+            AllChallenges = context.Challenges
                 .Include(challenge => challenge.Athletes)
                     .ThenInclude(athlete => athlete.ThisAthlete)
                 .ToList();
