@@ -20,7 +20,7 @@ namespace FitBananas.Controllers
         private static int brianId = 56614892;
         private static int treyId = 24299518;
 
-        private readonly int stravaId = brianId;
+        private readonly int stravaId = treyId;
 
         public BananaController(BananaContext context)
         {

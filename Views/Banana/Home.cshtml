@@ -56,11 +56,11 @@
                 int total;
                 if (challenge.ActivityType == "Run")
                 {
-                    total = runTotal.Elevation_Gain;
+                    total = runTotal.ElevationGainToFeet();
                 }
                 else
                 {
-                    total = bikeTotal.Elevation_Gain;
+                    total = bikeTotal.ElevationGainToFeet();
                 }
                 <div class="row mb-4">
                     <div class="col-md-8 card">
@@ -80,7 +80,7 @@
                             int averageGainToComplete = (challenge.Goal - total) / daysRemaining;
                             if (averageGainToComplete < 0) { averageGainToComplete = 0; }
                             int onPaceTotal = (int)((float)challenge.Goal / 365 * DateTime.Now.DayOfYear);
-                            int diff = onPaceTotal - progress;
+                            int diff = onPaceTotal - total;
                             string color;
                             string onPace;
                             if (diff <= 0)
@@ -93,7 +93,6 @@
                                 color = "danger";
                                 onPace = "behind";
                             }
-                            
                         }
                         <div class="progress mb-3">
                             <div class="progress-bar progress-bar-striped bg-@color" role="progressbar"
@@ -113,49 +112,62 @@
             }
             else
             {
-                int total;
+                int distanceTotal;
                 switch (challenge.ActivityType)
                 {
                     case "Run":
-                        total = runTotal.DistanceToMiles();
+                        distanceTotal = runTotal.DistanceToMiles();
                         break;
 
                     case "Bike":
-                        total = bikeTotal.DistanceToMiles();
+                        distanceTotal = bikeTotal.DistanceToMiles();
                         break;
 
                     default:
-                        total = swimTotal.DistanceToMiles();
+                        distanceTotal = swimTotal.DistanceToMiles();
                         break;
 
                     
                 }
-                var goal = (int)(challenge.Goal / 1609.34); 
+                var distanceGoal = (int)(challenge.Goal / 1609.34); 
                 <div class="row mb-4">
                     <div class="col-md-8 card">
                         <h4>@challenge.Title</h4>
-                        <p class="text-center mb-0">@total of @goal miles</p>
-                        <div class="progress mb-3">
-                            @{
-                                int progress;
-                                if (total >= goal)
-                                {
-                                    progress = 100;
-                                }
-                                else
-                                {
-                                    progress = (int)((float)total / goal * 100);
-                                }
-                                int averageDistance = total / DateTime.Now.DayOfYear;
-                                int averageDistanceToComplete = (goal - total) / daysRemaining;
-                                if (averageDistanceToComplete < 0) { averageDistanceToComplete = 0; }
+                        <p class="text-center mb-0">@distanceTotal of @distanceGoal miles</p>
+                        @{
+                            int distanceProgress;
+                            if (distanceTotal>= distanceGoal)
+                            {
+                                distanceProgress = 100;
                             }
-                            <div class="progress-bar 
-                                                        progress-bar-striped bg-danger" role="progressbar"
-                                style='width: @($"{progress}%")' aria-valuenow='@($"{progress}%")' aria-valuemin="0"
+                            else
+                            {
+                                distanceProgress = (int)((float)distanceTotal/ distanceGoal * 100);
+                            }
+                            int averageDistance = distanceTotal/ DateTime.Now.DayOfYear;
+                            int averageDistanceToComplete = (distanceGoal - distanceTotal) / daysRemaining;
+                            if (averageDistanceToComplete < 0) { averageDistanceToComplete = 0; }
+                            int distanceOnPaceTotal = (int)((float)distanceGoal / 365 * DateTime.Now.DayOfYear);
+                            int distanceDiff = distanceOnPaceTotal - distanceTotal;
+                            string distanceColor;
+                            string distanceOnPace;
+                            if (distanceDiff <= 0)
+                            {
+                                distanceColor= "success";
+                                distanceOnPace = "ahead";
+                            }
+                            else 
+                            {
+                                distanceColor= "danger";
+                                distanceOnPace = "behind";
+                            }
+                        }
+                        <div class="progress mb-3">
+                            <div class="progress-bar progress-bar-striped bg-@distanceColor" role="progressbar"
+                                style='width: @($"{distanceProgress}%")' aria-valuenow='@($"{distanceProgress}%")' aria-valuemin="0"
                                 aria-valuemax="100"></div>
                         </div>
-                        <p class="mb-1">@(goal - progress) miles behind schedule!</p>
+                        <p class="mb-1">@(distanceGoal - distanceProgress) miles @distanceOnPace schedule!</p>
                         <p class="mb-1">Average Daily Miles: @averageDistance miles</p>
                         <p>Average Daliy Miles to completion: @averageDistanceToComplete miles</p>
                     </div>

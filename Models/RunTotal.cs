@@ -22,5 +22,9 @@ namespace FitBananas.Models
         {
             return (int)(Distance / 1609.34);
         }
+        public int ElevationGainToFeet()
+        {
+            return (int)(Elevation_Gain*3.28084);
+        }
     }
 }
