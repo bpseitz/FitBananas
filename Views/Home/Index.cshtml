@@ -1,4 +1,4 @@
-
+@model IndexViewModel
 
 <nav class="navbar navbar-expand-md navbar-light bg-warning">
     <div class="container">
@@ -23,20 +23,27 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-auto p-5">
-            <h2 class="my-3 display-6">2021 Challenges</h2>
+            <h2 class="my-3 display-6">@DateTime.Now.Year Challenges</h2>
 
             <div>
-                <p>Participants: 52</p>
-                <p>Goals set: 70</p>
-            </div>
-            <div>
-                <p>Distance pledged: 3500 miles</p>
-                <p>Avg distance pledged: 50 miles</p>
-            </div>
-            <div>
-                <p>Elevation gained pledged: 650,000</p>
-                <p>Avg Elevation gain pledged: 9286</p>
+                <p>Participants: @Model.Participants</p>
+                <p>Goals set: @Model.GoalsSet</p>
+                <p id="timeRemaining"></p>
             </div>
         </div>
     </div>
+    <div class="row justify-content-around">
+            <div class="card col-4 p-3">
+                <p>Distance pledged: @Model.DistPledged miles</p>
+                <p>Avg distance pledged: @Model.AvgDistPledged miles</p>
+                <p>Distance Completed: @Model.DistanceCompleted miles</p>
+            </div>
+            <div class="card col-4 p-3">
+                <p>Elevation gained pledged: @Model.ElevGainPledged feet</p>
+                <p>Avg Elevation gain pledged: @Model.AvgElevGainPledged feet</p>
+                <p>Elevation Gain Completed: @Model.ElevationGainCompleted feet</p>
+            </div>
+
+    </div>
 </main>
+<script src="~/js/timeRemaining.js"></script>

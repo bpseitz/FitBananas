@@ -11,17 +11,19 @@ namespace FitBananas.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly BananaContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(BananaContext context)
         {
-            _logger = logger;
+            _context = context;
         }
+
 
         [HttpGet("")]
         public IActionResult Index()
         {
-            return View();
+            var modelView = new IndexViewModel(_context);
+            return View(modelView);
         }
 
         public IActionResult Privacy()

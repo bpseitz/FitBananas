@@ -17,10 +17,9 @@ namespace FitBananas.Controllers
         private readonly BananaContext _context;
 
         // hardcoding stravaId temporarily
-        private static int brianId = 56614892;
         private static int treyId = 24299518;
 
-        private readonly int stravaId = treyId;
+        private readonly int stravaId = AccessToken.StravaId;
 
         public BananaController(BananaContext context)
         {
