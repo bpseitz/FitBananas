@@ -36,6 +36,18 @@
     <form action="" method="post">
         <div class="row justify-content-center mb-3">
             <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="challengeType" value="Run" id="run" autocomplete="off" checked>
+                <label class="btn btn-outline-warning" for="run">Run</label>
+                
+                <input type="radio" class="btn-check" name="challengeType" value="Bike" id="bike" autocomplete="off" checked>
+                <label class="btn btn-outline-warning" for="bike">Bike</label>
+
+                <input type="radio" class="btn-check" name="challengeType" value="Swim" id="swim" autocomplete="off">
+                <label class="btn btn-outline-warning" for="swim">Swim</label>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
                 <label class="btn btn-outline-warning" for="btnradio1">Distance</label>
 
@@ -49,27 +61,6 @@
                     <option value="" selected disabled hidden>Select Challenge:</option>
                     <option value="">Pacific Crest Trail</option>
                 </select>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-auto">
-                <label class="mb-2" for="">Activities to Include:</label>
-            </div>
-        </div>
-        <div class="row justify-content-center mb-3">
-            <div class="col-auto">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
-                        Cycling
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                    <label class="form-check-label" for="flexCheckChecked">
-                        Running
-                    </label>
-                </div>
             </div>
         </div>
         <div class="row justify-content-center">
