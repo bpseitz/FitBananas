@@ -7,12 +7,14 @@ namespace FitBananas.Models
     public class NewChallengeViewModel
     {
         public List<Challenge> AllChallenges { get; set; }
-        public NewChallengeViewModel(BananaContext context, int athleteId)
+        public int StravaId { get; set; }
+        public NewChallengeViewModel(BananaContext context, int stravaId)
         {
             AllChallenges = context.Challenges
                 .Include(challenge => challenge.Athletes)
                     .ThenInclude(athlete => athlete.ThisAthlete)
                 .ToList();
+            StravaId = stravaId;
         }
     }
 }

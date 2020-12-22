@@ -29,29 +29,30 @@
     </div>
 </nav>
 
+@model NewChallengeViewModel
 <main class="container">
     <div class="row justify-content-center">
         <h2 class="m-5 text-center">Add a new challenge</h2>
     </div>
         <div class="row justify-content-center mb-3">
             <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="challengeType" value="Run" id="run" autocomplete="off" checked>
+                <input type="radio" class="btn-check" name="activityType" value="Run" id="run" autocomplete="off" checked>
                 <label class="btn btn-outline-warning" for="run">Run</label>
                 
-                <input type="radio" class="btn-check" name="challengeType" value="Bike" id="bike" autocomplete="off" checked>
+                <input type="radio" class="btn-check" name="activityType" value="Bike" id="bike" autocomplete="off">
                 <label class="btn btn-outline-warning" for="bike">Bike</label>
 
-                <input type="radio" class="btn-check" name="challengeType" value="Swim" id="swim" autocomplete="off">
+                <input type="radio" class="btn-check" name="activityType" value="Swim" id="swim" autocomplete="off">
                 <label class="btn btn-outline-warning" for="swim">Swim</label>
             </div>
         </div>
         <div class="row justify-content-center mb-3">
             <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                <label class="btn btn-outline-warning" for="btnradio1">Distance</label>
+                <input type="radio" class="btn-check" name="challengeType" id="distance" autocomplete="off" checked>
+                <label class="btn btn-outline-warning" for="distance">Distance</label>
 
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                <label class="btn btn-outline-warning" for="btnradio3">Elevation Gain</label>
+                <input type="radio" class="btn-check" name="challengeType" id="elevationGain" autocomplete="off">
+                <label class="btn btn-outline-warning" for="elevationGain">Elevation Gain</label>
             </div>
         </div>
     <form action="/challenge/accept" method="post">
@@ -61,7 +62,15 @@
                     <option value="" selected disabled hidden>Select Challenge:</option>
                     @foreach (var challenge in @Model.AllChallenges)
                     {
-                        <option value="@challenge.ChallengeId">@challenge.Title</option>
+                        if(challenge.Athletes.Any(athlete => athlete.ThisAthlete.Id == @Model.StravaId))
+                        {
+                            <option class="@challenge.ActivityType-@challenge.ChallengeType" value="@challenge.ChallengeId" disabled>@challenge.Title</option>
+
+                        }
+                        else
+                        {
+                            <option class="@challenge.ActivityType-@challenge.ChallengeType" value="@challenge.ChallengeId">@challenge.Title</option>
+                        }
                     }
                 </select>
             </div>
@@ -73,3 +82,63 @@
         </div>
     </form>
 </main>
+<script>
+
+    var buttons = document.getElementsByClassName('btn-check');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function() {
+            allOptions = document.getElementsByTagName("option")
+            document.getElementById('elevationGain').disabled = false;
+            for(var k = 0; k < allOptions.length; k++){
+                allOptions[k].style.display = "none";
+            }
+            if(document.getElementById('run').checked && document.getElementById('distance').checked) {
+                //var runOptions = document.getElementById('Run');
+                //runOptions.style.display="none";
+                options = document.getElementsByClassName("Run-Distance")
+                for(var j = 0; j < options.length; j++){
+                    options[j].style.display = "block";
+                }
+            }
+            if(document.getElementById('run').checked && document.getElementById('elevationGain').checked) {
+                //var runOptions = document.getElementById('Run');
+                //runOptions.style.display="none";
+                options = document.getElementsByClassName("Run-Elevation")
+                for(var j = 0; j < options.length; j++){
+                    options[j].style.display = "block";
+                }
+            }
+            if(document.getElementById('bike').checked && document.getElementById('distance').checked) {
+                //var runOptions = document.getElementById('Run');
+                //runOptions.style.display="none";
+                options = document.getElementsByClassName("Bike-Distance")
+                for(var j = 0; j < options.length; j++){
+                    options[j].style.display = "block";
+                }
+            }
+            if(document.getElementById('bike').checked && document.getElementById('elevationGain').checked) {
+                //var runOptions = document.getElementById('Run');
+                //runOptions.style.display="none";
+                options = document.getElementsByClassName("Bike-Elevation")
+                for(var j = 0; j < options.length; j++){
+                    options[j].style.display = "block";
+                }
+            }
+            if(document.getElementById('swim').checked) {
+                //var runOptions = document.getElementById('Run');
+                //runOptions.style.display="none";
+                options = document.getElementsByClassName("Swim-Distance")
+                for(var j = 0; j < options.length; j++){
+                    options[j].style.display = "block";
+                }
+                document.getElementById('elevationGain').disabled = true;
+            }
+        });
+    }
+    
+        //console.log(value);
+        //var selectedDiv = document.getElementsByClassName('Run');
+        //selectedDiv.style.display="block";
+        //console.log('clicked');
+    
+</script>
