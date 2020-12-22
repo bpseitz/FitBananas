@@ -17,10 +17,10 @@ namespace FitBananas.Controllers
         private readonly BananaContext _context;
 
         // hardcoding stravaId temporarily
-        private static int bryanId = 56614892;
+        private static int brianId = 56614892;
         private static int treyId = 24299518;
 
-        private readonly int stravaId = treyId;
+        private readonly int stravaId = brianId;
 
         public BananaController(BananaContext context)
         {
@@ -30,6 +30,7 @@ namespace FitBananas.Controllers
         [HttpGet("home")]
         public IActionResult Home()
         {
+            HttpContext.Session.SetInt32("UserId", 1); // ***************************************Dev setting
             HomeViewModel homeViewModel = new HomeViewModel(_context, stravaId);
             return View(homeViewModel);
         }
@@ -37,6 +38,7 @@ namespace FitBananas.Controllers
         [HttpGet("new")]
         public IActionResult New()
         {
+            HttpContext.Session.SetInt32("UserId", 1); // ***************************************Dev setting
             NewChallengeViewModel viewModel = new NewChallengeViewModel(_context, stravaId);
             return View(viewModel);
         }
@@ -44,6 +46,7 @@ namespace FitBananas.Controllers
         [HttpGet("settings")]
         public IActionResult Settings()
         {
+            HttpContext.Session.SetInt32("UserId", 1); // ***************************************Dev setting
             return View();
         }
 

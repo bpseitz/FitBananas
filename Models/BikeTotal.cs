@@ -17,5 +17,11 @@ namespace FitBananas.Models
         public int AthleteStatsId { get; set; }
 
         public AthleteStats UserStats { get; set; }
+
+        public int DistanceToMiles()
+        {
+            return (int)(Distance / 1609.34);
+        }
+
     }
 }

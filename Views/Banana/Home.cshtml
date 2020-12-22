@@ -44,48 +44,63 @@
             <h1>@name's 2021 Challenges</h1>
         </div>
         <div class="col-auto">
-            <h2 id="daysRemaining"></h2>
+            <h2 id="timeRemaining"></h2>
         </div>
     </div>
     @if (challenges.Count > 0)
     {
         foreach (var challenge in challenges)
         {
-            int total;
-            if (challenge.ChallengeType == "Run")
-            {
-                total = runTotal.Elevation_Gain;
-            }
-            else
-            {
-                total = bikeTotal.Elevation_Gain;
-            }
             if (challenge.ChallengeType == "Elevation Gain")
             {
+                int total;
+                if (challenge.ActivityType == "Run")
+                {
+                    total = runTotal.Elevation_Gain;
+                }
+                else
+                {
+                    total = bikeTotal.Elevation_Gain;
+                }
                 <div class="row mb-4">
                     <div class="col-md-8 card">
                         <h4>@challenge.Title</h4>
                         <p class="text-center mb-0">@total of @challenge.Goal feet</p>
-                        <div class="progress mb-3">
-                            @{
-                                int progress;
-                                if(total >= challenge.Goal)
-                                {
-                                    progress = 100;
-                                }
-                                else
-                                {
-                                    progress = (int)((float)total / challenge.Goal*100);
-                                }
-                                int averageGain = total / DateTime.Now.DayOfYear;
-                                int averageGainToComplete = (challenge.Goal - total) / daysRemaining;
-                                if(averageGainToComplete < 0) { averageGainToComplete = 0; }
+                        @{
+                            int progress;
+                            if (total >= challenge.Goal)
+                            {
+                                progress = 100;
                             }
-                            <div class="progress-bar 
-                                progress-bar-striped bg-danger" role="progressbar" style='width: @($"{progress}%")' aria-valuenow='@($"{progress}%")'
-                                aria-valuemin="0" aria-valuemax="100"></div>
+                            else
+                            {
+                                progress = (int)((float)total / challenge.Goal * 100);
+                            }
+                            int averageGain = total / DateTime.Now.DayOfYear;
+                            int averageGainToComplete = (challenge.Goal - total) / daysRemaining;
+                            if (averageGainToComplete < 0) { averageGainToComplete = 0; }
+                            int onPaceTotal = (int)((float)challenge.Goal / 365 * DateTime.Now.DayOfYear);
+                            int diff = onPaceTotal - progress;
+                            string color;
+                            string onPace;
+                            if (diff <= 0)
+                            {
+                                color = "success";
+                                onPace = "ahead";
+                            }
+                            else 
+                            {
+                                color = "danger";
+                                onPace = "behind";
+                            }
+                            
+                        }
+                        <div class="progress mb-3">
+                            <div class="progress-bar progress-bar-striped bg-@color" role="progressbar"
+                                style='width: @($"{progress}%")' aria-valuenow='@($"{progress}%")' aria-valuemin="0"
+                                aria-valuemax="100"></div>
                         </div>
-                        <p class="mb-1">@(challenge.Goal - progress) feet behind schedule!</p>
+                        <p class="mb-1">@(challenge.Goal - progress) feet @onPace schedule!</p>
                         <p class="mb-1">Average Daily Elevation Gain: @averageGain feet</p>
                         <p>Average Daliy Elevation Gain to completion: @averageGainToComplete feet</p>
                     </div>
@@ -95,14 +110,67 @@
                             alt="Mount Rainier">
                     </div>
                 </div>
-
             }
+            else
+            {
+                int total;
+                switch (challenge.ActivityType)
+                {
+                    case "Run":
+                        total = runTotal.DistanceToMiles();
+                        break;
 
+                    case "Bike":
+                        total = bikeTotal.DistanceToMiles();
+                        break;
+
+                    default:
+                        total = swimTotal.DistanceToMiles();
+                        break;
+
+                    
+                }
+                var goal = (int)(challenge.Goal / 1609.34); 
+                <div class="row mb-4">
+                    <div class="col-md-8 card">
+                        <h4>@challenge.Title</h4>
+                        <p class="text-center mb-0">@total of @goal miles</p>
+                        <div class="progress mb-3">
+                            @{
+                                int progress;
+                                if (total >= goal)
+                                {
+                                    progress = 100;
+                                }
+                                else
+                                {
+                                    progress = (int)((float)total / goal * 100);
+                                }
+                                int averageDistance = total / DateTime.Now.DayOfYear;
+                                int averageDistanceToComplete = (goal - total) / daysRemaining;
+                                if (averageDistanceToComplete < 0) { averageDistanceToComplete = 0; }
+                            }
+                            <div class="progress-bar 
+                                                        progress-bar-striped bg-danger" role="progressbar"
+                                style='width: @($"{progress}%")' aria-valuenow='@($"{progress}%")' aria-valuemin="0"
+                                aria-valuemax="100"></div>
+                        </div>
+                        <p class="mb-1">@(goal - progress) miles behind schedule!</p>
+                        <p class="mb-1">Average Daily Miles: @averageDistance miles</p>
+                        <p>Average Daliy Miles to completion: @averageDistanceToComplete miles</p>
+                    </div>
+                    <div class="col d-none d-md-block">
+                        <img class="img-fluid"
+                            src="https://images.squarespace-cdn.com/content/v1/589a69fb17bffcb8cef2a31b/1496506773855-KNMV1IDM2TAB1YLRWXLI/ke17ZwdGBToddI8pDm48kHNTt5bgEu88OqWJCzqcP-97gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0iy8Rj2bPXFyaluz0PeKicNG2FlhXETQs4oaPiPBb5OTvYpCy8pPKCrwsWHkHjc9Zw/image-asset.jpeg"
+                            alt="Mount Rainier">
+                    </div>
+                </div>
+            }
         }
     }
     else
     {
-                <p class="text-center display-4 mb-3">You don't have any challenges yet!</p>
+        <p class="text-center display-4 mb-3">You don't have any challenges yet!</p>
         <div class="row justify-content-center">
             <div class="col-auto">
                 <a href="/new" class="btn btn-lg btn-warning">Add a Challenge</a>
@@ -111,5 +179,12 @@
     }
 </main>
 <script>
-    
+    var now = new Date();
+    var endOfYear = new Date(2022, 1, 1);
+    var timeLeft = (endOfYear - now) + ((now.getTimezoneOffset() - endOfYear.getTimezoneOffset()) * 60 * 1000);
+    var daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    var hoursLeft = Math.floor(((timeLeft / (1000 * 60 * 60 * 24)) - daysLeft) * (24));
+    var string = "" + daysLeft + " days, " + hoursLeft + " hours remaining";
+    var timeRemaining = document.getElementById('timeRemaining');
+    timeRemaining.innerHTML = string;
 </script>
