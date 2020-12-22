@@ -16,7 +16,10 @@ namespace FitBananas.Controllers
         private readonly BananaContext _context;
 
         // hardcoding userid temporarily
-        private readonly int userId = 56614892;
+        private static int bryanId = 56614892;
+        private static int treyId = 24299518;
+
+        private readonly int userId = treyId;
 
         public BananaController(BananaContext context)
         {
@@ -26,16 +29,8 @@ namespace FitBananas.Controllers
         [HttpGet("home")]
         public IActionResult Home()
         {
-            // string test = loadAthleteInfo().Result.FirstName;
-            // ViewBag.Test = test;
-            // // if (test == null)
-            // // {
-            // //     Console.WriteLine("null");
-            // // }
-            // // else {
-            // //     Console.WriteLine(test);
-            // // }
-            return View();
+            HomeViewModel homeViewModel = new HomeViewModel(_context, userId);
+            return View(homeViewModel);
         }
 
         [HttpGet("new")]
@@ -95,6 +90,8 @@ namespace FitBananas.Controllers
             }
             else
             {
+                // Update user's totals in the databaase
+                // Get the Total that belongs to the UserStats of the User 
                 BikeTotal bikeTotalToUpdate = _context.BikeTotals
                     .Include(bikeTotal => bikeTotal.UserStats)
                     .First(bikeTotal => bikeTotal.UserStats.AthleteId == dbAthlete.AthleteId);

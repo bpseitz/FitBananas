@@ -1,3 +1,16 @@
+@model HomeViewModel
+@{
+    string name = Model.AthleteName;
+    if(Model.AthleteChallenges.Count > 0)
+    {
+        List<Challenge> challenges = Model.AthleteChallenges;
+    } 
+    BikeTotal bikeTotal = Model.CurrentStats.YTD_Ride_Totals;
+    RunTotal runTotal = Model.CurrentStats.YTD_Run_Totals;
+    SwimTotal swimTotal = Model.CurrentStats.YTD_Swim_Totals;
+    
+}
+
 <nav class="navbar navbar-expand-md navbar-light bg-warning">
     <div class="container">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
@@ -31,7 +44,7 @@
 <main class="container">
     <div class="row m-5">
         <div class="col-auto me-auto">
-            <h1>2021 Challenges @ViewBag.Test</h1>
+            <h1>2021 Challenges</h1>
         </div>
         <div class="col-auto">
             <h2>340 days, 7 hours remaining</h2>
