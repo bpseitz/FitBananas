@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FitBananas.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitBananas.Controllers
 {
@@ -15,7 +16,7 @@ namespace FitBananas.Controllers
         private readonly BananaContext _context;
 
         // hardcoding userid temporarily
-        private readonly int userId = 24299518;
+        private readonly int userId = 56614892;
 
         public BananaController(BananaContext context)
         {
@@ -60,15 +61,62 @@ namespace FitBananas.Controllers
         [HttpGet("strava/auth")]
         public IActionResult AuthorizeStrava()
         {
+            // API call to retrieve athlete info
             Athlete currentAthlete = loadAthleteInfo().Result;
+            // API call to retrieve athlete stats
+            AthleteStats currentStats = loadAthleteStats(currentAthlete.Id).Result;
             Athlete dbAthlete = _context.Athletes.FirstOrDefault(athlete => athlete.Id == currentAthlete.Id);
+            
             if(dbAthlete == null)
             {
+                // Add a new athlete to the database
                 _context.Add(currentAthlete);
                 _context.SaveChanges();
                 dbAthlete = currentAthlete;
+                
+                var newAthleteStats = new AthleteStats();
+                newAthleteStats.AthleteId = dbAthlete.AthleteId;
+                // Add a new AthleteStats to database
+                _context.Add(newAthleteStats);
+                _context.SaveChanges();
+
+                int newAthleteStatsId = newAthleteStats.AthleteStatsId;
+                // Pull year to date totals from the AthleteStats object created by API call
+                BikeTotal newBikeTotal = currentStats.YTD_Ride_Totals;
+                newBikeTotal.AthleteStatsId = newAthleteStatsId;
+                _context.Add(newBikeTotal);
+                RunTotal newRunTotal = currentStats.YTD_Run_Totals;
+                newRunTotal.AthleteStatsId = newAthleteStatsId;
+                _context.Add(newRunTotal);
+                SwimTotal newSwimTotal = currentStats.YTD_Swim_Totals;
+                newSwimTotal.AthleteStatsId = newAthleteStatsId;
+                _context.Add(newSwimTotal);
+                _context.SaveChanges();
             }
-            AthleteStats currentStats = loadAthleteStats(dbAthlete.Id).Result;
+            else
+            {
+                BikeTotal bikeTotalToUpdate = _context.BikeTotals
+                    .Include(bikeTotal => bikeTotal.UserStats)
+                    .First(bikeTotal => bikeTotal.UserStats.AthleteId == dbAthlete.AthleteId);
+                bikeTotalToUpdate.Distance = currentStats.YTD_Ride_Totals.Distance;
+                bikeTotalToUpdate.Elevation_Gain = currentStats.YTD_Ride_Totals.Elevation_Gain;
+                bikeTotalToUpdate.UpdatedAt = DateTime.Now;
+                
+                RunTotal runTotalToUpdate = _context.RunTotals
+                    .Include(runTotal => runTotal.UserStats)
+                    .First(runTotal => runTotal.UserStats.AthleteId == dbAthlete.AthleteId);
+                runTotalToUpdate.Distance = currentStats.YTD_Run_Totals.Distance;
+                runTotalToUpdate.Elevation_Gain = currentStats.YTD_Run_Totals.Elevation_Gain;
+                runTotalToUpdate.UpdatedAt = DateTime.Now;
+                
+                SwimTotal swimTotalToUpdate = _context.SwimTotals
+                    .Include(swimTotal => swimTotal.UserStats)
+                    .First(swimTotal => swimTotal.UserStats.AthleteId == dbAthlete.AthleteId);
+                swimTotalToUpdate.Distance = currentStats.YTD_Swim_Totals.Distance;
+                swimTotalToUpdate.UpdatedAt = DateTime.Now;
+
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Home");
         }
