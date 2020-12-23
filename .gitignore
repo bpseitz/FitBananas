@@ -5,6 +5,7 @@
 
 #Personal files to ignore
 accesstoken.cs
+clientinfo.cs
 
 # User-specific files
 *.rsuser
