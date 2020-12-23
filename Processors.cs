@@ -43,7 +43,7 @@ namespace FitBananas
                 }
             }
         }
-        public static async Task<Athlete> Authorization(string code)
+        public static async Task<AuthorizationModel> Authorization(string code)
         {
             string url = $"https://www.strava.com/oauth/token";
             var stringContent = new StringContent($"?client_id={ClientInfo.myClientId}&client_secret={ClientInfo.myClientSecret}&code=AUTHORIZATIONCODE&grant_type={code}");
@@ -52,7 +52,7 @@ namespace FitBananas
                 if (response.IsSuccessStatusCode)
                 {
 
-                    Athlete result = await response.Content.ReadAsAsync<Athlete>();
+                    AuthorizationModel result = await response.Content.ReadAsAsync<AuthorizationModel>();
                     
                     return result;
                 }

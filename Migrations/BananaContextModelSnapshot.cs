@@ -38,10 +38,15 @@ namespace FitBananas.Migrations
                     b.Property<bool>("MetricUnits")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int>("TokenId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("AthleteId");
+
+                    b.HasIndex("TokenId");
 
                     b.ToTable("Athletes");
                 });
@@ -210,6 +215,44 @@ namespace FitBananas.Migrations
                         .IsUnique();
 
                     b.ToTable("SwimTotals");
+                });
+
+            modelBuilder.Entity("FitBananas.Models.Token", b =>
+                {
+                    b.Property<int>("TokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AccessToken")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<TimeSpan>("ExpiresIn")
+                        .HasColumnType("time(6)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("TokenId");
+
+                    b.ToTable("Tokens");
+                });
+
+            modelBuilder.Entity("FitBananas.Models.Athlete", b =>
+                {
+                    b.HasOne("FitBananas.Models.Token", "Token")
+                        .WithMany()
+                        .HasForeignKey("TokenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FitBananas.Models.AthleteChallenge", b =>

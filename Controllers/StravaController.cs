@@ -27,15 +27,21 @@ namespace FitBananas.Controllers
             Console.WriteLine(scope);
             // send post request to strava api with code
             // to receive the access token and refresh token
-            loadAuthorization(code);
+            AuthorizationModel authModel =  loadAuthorization(code).Result;
+            var newToken = new Token();
+            newToken.ExpiresAt = DateTime.Now.AddSeconds(authModel.Expires_In);
+            newToken.ExpiresIn = TimeSpan.FromSeconds(authModel.Expires_In);
+            newToken.RefreshToken = authModel.Refresh_Token;
+            newToken.AccessToken = authModel.Access_Token;
+            Athlete currentAthlete = authModel.Athlete;
+            int userId = UpdateAthlete(currentAthlete);
+            HttpContext.Session.SetInt32("UserId", userId);
+
             return RedirectToAction("Home", "Banana");
         }
 
-        [HttpGet("strava/auth")]
-        public IActionResult AuthorizeStrava()
+        public int UpdateAthlete(Athlete currentAthlete)
         {
-            // API call to retrieve athlete info
-            Athlete currentAthlete = loadAthleteInfo().Result;
             // API call to retrieve athlete stats
             AthleteStats currentStats = loadAthleteStats(currentAthlete.Id).Result;
             Athlete dbAthlete = _context.Athletes.FirstOrDefault(athlete => athlete.Id == currentAthlete.Id);
@@ -92,8 +98,7 @@ namespace FitBananas.Controllers
 
                 _context.SaveChanges();
             }
-            HttpContext.Session.SetInt32("UserId", dbAthlete.AthleteId);
-            return RedirectToAction("Home");
+            return dbAthlete.AthleteId;
         }
         public static async Task<Athlete> loadAthleteInfo()
         {
@@ -106,10 +111,9 @@ namespace FitBananas.Controllers
             return await Processor.LoadAthleteStatsInfo(athleteId);
         }
 
-        // make model for the response to store it
-        public static async void loadAuthorization(string code)
+        public static async Task<AuthorizationModel> loadAuthorization(string code)
         {
-            await Processor.Authorization(code);
+            return await Processor.Authorization(code);
         }
     }
 }

@@ -12,5 +12,6 @@ namespace FitBananas.Models
         public DbSet<BikeTotal> BikeTotals { get; set; }
         public DbSet<RunTotal> RunTotals { get; set; }
         public DbSet<SwimTotal> SwimTotals { get; set; }
+        public DbSet<Token> Tokens { get; set; }
     }
 }
