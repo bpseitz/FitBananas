@@ -1,8 +1,9 @@
 @model IndexViewModel
+<link rel="stylesheet" href="~/css/indexStyle.css">
 
 <nav class="navbar navbar-expand-md navbar-light bg-warning">
     <div class="container">
-        <a class="navbar-brand" href="#">Fit Bananas</a>
+        <a class="navbar-brand" id="indexBrand" href="#">Fit Bananas</a>
     </div>
     <div class="navbar-nav">
         <a href="https://www.strava.com">
@@ -13,7 +14,7 @@
 <!-- Link to OAuth page-->
 
 <main class="container">
-    <p class="display-5 text-center my-5">Log in with Strava to start a challenge!</p>
+    <p class="display-5 text-center m-5">Log in with Strava to start a challenge!</p>
     <div class="row justify-content-center">
         <div class="col-auto">
             <a href="/strava/auth">
@@ -21,27 +22,27 @@
             </a>
         </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-auto p-5">
+    <div class="row justify-content-center mt-5 mb-3">
+        <div class="col-auto">
             <h2 class="my-3 display-6">@DateTime.Now.Year Challenges</h2>
 
             <div>
-                <p>Participants: @Model.Participants</p>
-                <p>Goals set: @Model.GoalsSet</p>
-                <p id="timeRemaining"></p>
+                <p class="lead mb-1" id="timeRemaining"></p>
+                <p class="lead mb-1">Participants: @Model.Participants</p>
+                <p class="lead">Goals set: @Model.GoalsSet</p>
             </div>
         </div>
     </div>
-    <div class="row justify-content-around">
-            <div class="card col-4 p-3">
-                <p>Distance pledged: @Model.DistPledged miles</p>
-                <p>Avg distance pledged: @Model.AvgDistPledged miles</p>
-                <p>Distance Completed: @Model.DistanceCompleted miles</p>
+    <div class="row justify-content-center mb-5">
+            <div class="box col-lg-4 p-3 m-3">
+                <p class="lead">Distance pledged: @Model.DistPledged miles</p>
+                <p class="lead">Avg distance pledged: @Model.AvgDistPledged miles</p>
+                <p class="lead">Distance Completed: @Model.DistanceCompleted miles</p>
             </div>
-            <div class="card col-4 p-3">
-                <p>Elevation gained pledged: @Model.ElevGainPledged feet</p>
-                <p>Avg Elevation gain pledged: @Model.AvgElevGainPledged feet</p>
-                <p>Elevation Gain Completed: @Model.ElevationGainCompleted feet</p>
+            <div class="box col-lg-4 p-3 m-3">
+                <p class="lead">Elevation gained pledged: @Model.ElevGainPledged feet</p>
+                <p class="lead">Avg Elevation gain pledged: @Model.AvgElevGainPledged feet</p>
+                <p class="lead">Elevation Gain Completed: @Model.ElevationGainCompleted feet</p>
             </div>
 
     </div>
