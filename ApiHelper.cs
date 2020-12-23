@@ -1,14 +1,13 @@
-using System;
+using System.Threading.Tasks;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System;
+using FitBananas.Models;
 
-
-namespace FitBananas.Models
+namespace FitBananas
 {
     public class ApiHelper
     {
         public static HttpClient ApiClient { get; set; } = new HttpClient();
-
         public static void InitializeClient()
         {
             ApiClient = new HttpClient();
