@@ -64,12 +64,12 @@
                     {
                         if(challenge.Athletes.Any(athlete => athlete.ThisAthlete.Id == @Model.StravaId))
                         {
-                            <option class="@challenge.ActivityType-@challenge.ChallengeType" value="@challenge.ChallengeId" disabled>@challenge.Title</option>
+                            <option class="@challenge.ActivityType-@challenge.ChallengeType new-challenge" value="@challenge.ChallengeId" disabled>@challenge.Title</option>
 
                         }
                         else
                         {
-                            <option class="@challenge.ActivityType-@challenge.ChallengeType" value="@challenge.ChallengeId">@challenge.Title</option>
+                            <option class="@challenge.ActivityType-@challenge.ChallengeType new-challenge" value="@challenge.ChallengeId">@challenge.Title</option>
                         }
                     }
                 </select>

@@ -28,41 +28,48 @@
         </div>
     </div>
 </nav>
-
+@model SettingsViewModel
 <main class="container">
     <div class="row justify-content-center">
         <h2 class="m-5 text-center">Settings</h2>
     </div>
-    <form action="" method="post" class="rom justify-content/-center mb-3">
+    <form action="/units/select" method="post" class="rom justify-content/-center mb-3" id="unit-form">
         <div class="row justify-content-center mb-3">
-            <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="distance" id="miles" autocomplete="off" checked>
-                <label class="btn btn-outline-warning" for="btnradio1">Miles</label>
+            @if (Model.currentAthlete.MetricUnits)
+            {
 
-                <input type="radio" class="btn-check" name="distance" id="kilometers" autocomplete="off">
-                <label class="btn btn-outline-warning" for="btnradio3">Kilometers</label>
-            </div>
+                <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="units" id="miles" value="imperial" autocomplete="off">
+                    <label class="btn btn-outline-warning" for="miles">Miles</label>
+
+                    <input type="radio" class="btn-check" name="units" id="kilometers" value="metric" autocomplete="off"
+                        checked>
+                    <label class="btn btn-outline-warning" for="kilometers">Kilometers</label>
+                </div>
+            }
+            else
+            {
+                <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="units" id="miles" value="imperial" autocomplete="off" checked>
+                    <label class="btn btn-outline-warning" for="miles">Miles</label>
+
+                    <input type="radio" class="btn-check" name="units" id="kilometers" value="metric" autocomplete="off"
+                        >
+                    <label class="btn btn-outline-warning" for="kilometers">Kilometers</label>
+                </div>
+            }
         </div>
     </form>
-    <form>
-
-        <div class="row justify-content-center mb-3">
-            <div class="btn-group col-auto" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="time" id="twelveHour" autocomplete="off" checked>
-                <label class="btn btn-outline-warning" for="btnradio1">12h</label>
-
-                <input type="radio" class="btn-check" name="time" id="twentyFourHour" autocomplete="off">
-                <label class="btn btn-outline-warning" for="btnradio3">24h</label>
-            </div>
-        </div>
-    </form>
-    <form>
+    <!--check if any challenges in the list-->
+    <form action="/challenge/remove" method="post">
         <div class="row justify-content-center mb-3">
             <div class="col-auto">
-                <select name="" id="" class="form-select">
-                    <!--add option for each challenge user has active-->
-                    <option value="" selected>Mt. Everest</option>
-                    <option value="">Pacific Crest Trail</option>
+                <select name="challengeId" id="" class="form-select">
+                    <option value="" selected disabled hidden>Remove Challenge:</option>
+                    @foreach(AthleteChallenge challenge in Model.currentAthlete.Challenges)
+                    {
+                        <option value="@challenge.ThisChallenge.ChallengeId">@challenge.ThisChallenge.Title</option>
+                    }
                 </select>
             </div>
             <div class="col-auto">
@@ -78,3 +85,4 @@
         </div>
     </form>
 </main>
+<script src="~/js/settings.js"></script>
