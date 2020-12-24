@@ -54,15 +54,11 @@ namespace FitBananas
             {
                 // Figure out how to allow post request from the strava database only.
                 // there should be a value in the response that will tell us where the information is coming from.
-                // It should be in the context.request.headers
-                if(context.Request.Method == "Post")
-                {
-                    
-                }
                 // if a user is not signed in, they will be redirected back to the splash page
-                else if(context.Request.Path != "" && context.Session.GetInt32("UserId") == null)
+                if(context.Request.Path != "/" && context.Request.Path != "/exchange_token" && context.Session.GetInt32("UserId") == null)
                 {
                     // reassigns the path to "/" before passing it back to the controller in "app.UseMvc"
+                    Console.WriteLine(context.Request.Path);
                     context.Request.Path = "/";
                     Console.WriteLine($"Attempted server breach averted at {DateTime.Now}");
                 }
