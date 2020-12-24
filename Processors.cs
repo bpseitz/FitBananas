@@ -71,13 +71,6 @@ namespace FitBananas
             using (var response = await client.PostAsync(url, content))
             {
                 Console.WriteLine("Status Code: " + response.StatusCode);
-                foreach(var header in response.Headers)
-                {
-                    foreach(var item in header.Value)
-                    {
-                        Console.WriteLine(header.Value);
-                    }
-                }
                 AuthorizationModel result = await response.Content.ReadAsAsync<AuthorizationModel>();
                 return result;
                 // if (response.IsSuccessStatusCode)
