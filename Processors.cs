@@ -71,21 +71,19 @@ namespace FitBananas
             using (var response = await client.PostAsync(url, content))
             {
                 Console.WriteLine("Status Code: " + response.StatusCode);
-                AuthorizationModel result = await response.Content.ReadAsAsync<AuthorizationModel>();
-                return result;
                 // build status code to meet our needs
-                // if (response.StatusCode == "Ok")
-                // {
-                //     AuthorizationModel result = await response.Content.ReadAsAsync<AuthorizationModel>();
-                //     return result;
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    AuthorizationModel result = await response.Content.ReadAsAsync<AuthorizationModel>();
+                    return result;
 
 
-                //     return result;
-                // }
-                // else
-                // {
-                //     throw new Exception(response.ReasonPhrase);
-                // }
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
             }
         }
     }
