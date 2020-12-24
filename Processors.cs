@@ -30,9 +30,9 @@ namespace FitBananas
                 }
             }
         }
-        public static async Task<AthleteStats> LoadAthleteStatsInfo(int athleteId)
+        public static async Task<AthleteStats> LoadAthleteStatsInfo(int athleteId, string accessToken)
         {
-            string url = $"https://www.strava.com/api/v3/athletes/{athleteId}/stats?access_token={AccessToken.current}";
+            string url = $"https://www.strava.com/api/v3/athletes/{athleteId}/stats?access_token={accessToken}";
             Console.WriteLine("Load Athlete Stats running");
             using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url))
             {
@@ -57,6 +57,9 @@ namespace FitBananas
                 {"code", code},
                 {"grant_type", "authorization_code"}
             };
+            var listValues = new List<KeyValuePair<string,object>>();
+            // listValues.Add({"client_id", ClientInfo.myClientId});
+
             // AuthorizationJson content = new AuthorizationJson(code);
             // string json = JsonConvert.SerializeObject(content);
             // var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -64,20 +67,29 @@ namespace FitBananas
             // using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(url, stringContent))
             var content = new FormUrlEncodedContent(postValues);
             Console.WriteLine("Authorization running");
+            Console.WriteLine(content);
             using (var response = await client.PostAsync(url, content))
             {
-                Console.WriteLine(response.IsSuccessStatusCode);
-                if (response.IsSuccessStatusCode)
+                Console.WriteLine("Status Code: " + response.StatusCode);
+                foreach(var header in response.Headers)
                 {
-
-                    AuthorizationModel result = await response.Content.ReadAsAsync<AuthorizationModel>();
-
-                    return result;
+                    foreach(var item in header.Value)
+                    {
+                        Console.WriteLine(header.Value);
+                    }
                 }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
+                AuthorizationModel result = await response.Content.ReadAsAsync<AuthorizationModel>();
+                return result;
+                // if (response.IsSuccessStatusCode)
+                // {
+
+
+                //     return result;
+                // }
+                // else
+                // {
+                //     throw new Exception(response.ReasonPhrase);
+                // }
             }
         }
     }

@@ -33,17 +33,21 @@ namespace FitBananas.Controllers
             newToken.ExpiresIn = TimeSpan.FromSeconds(authModel.Expires_In);
             newToken.RefreshToken = authModel.Refresh_Token;
             newToken.AccessToken = authModel.Access_Token;
+            _context.Add(newToken);
+            _context.SaveChanges();
+
             Athlete currentAthlete = authModel.Athlete;
-            int userId = UpdateAthlete(currentAthlete);
+            currentAthlete.TokenId = newToken.TokenId;
+            int userId = UpdateAthlete(currentAthlete, newToken.AccessToken);
             HttpContext.Session.SetInt32("UserId", userId);
 
             return RedirectToAction("Home", "Banana");
         }
 
-        public int UpdateAthlete(Athlete currentAthlete)
+        public int UpdateAthlete(Athlete currentAthlete, string accessToken)
         {
             // API call to retrieve athlete stats
-            AthleteStats currentStats = loadAthleteStats(currentAthlete.Id).Result;
+            AthleteStats currentStats = loadAthleteStats(currentAthlete.Id, accessToken).Result;
             Athlete dbAthlete = _context.Athletes.FirstOrDefault(athlete => athlete.Id == currentAthlete.Id);
             
             if(dbAthlete == null)
@@ -106,9 +110,9 @@ namespace FitBananas.Controllers
             
         }
 
-        public static async Task<AthleteStats> loadAthleteStats(int athleteId)
+        public static async Task<AthleteStats> loadAthleteStats(int athleteId, string accessToken)
         {
-            return await Processor.LoadAthleteStatsInfo(athleteId);
+            return await Processor.LoadAthleteStatsInfo(athleteId, accessToken);
         }
 
         public static async Task<AuthorizationModel> loadAuthorization(string code)
