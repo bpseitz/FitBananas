@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using FitBananas.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
-using System.Net.Http;
 
 namespace FitBananas.Controllers
 {
@@ -22,12 +21,15 @@ namespace FitBananas.Controllers
         [HttpGet("exchange_token/")]
         public IActionResult ExchangeToken(string state, string code, string scope)
         {
-            Console.WriteLine(state);
-            Console.WriteLine(code);
-            Console.WriteLine(scope);
+            Console.WriteLine($"Echange Token State: {state}");
+            Console.WriteLine($"Echange Token Code: {code}");
+            Console.WriteLine($"Echange Token Scope: {scope}");
+
             // send post request to strava api with code
             // to receive the access token and refresh token
             AuthorizationModel authModel =  loadAuthorization(code).Result;
+
+            // Build token to add to DB
             var newToken = new Token();
             newToken.ExpiresAt = DateTime.Now.AddSeconds(authModel.Expires_In);
             newToken.ExpiresIn = TimeSpan.FromSeconds(authModel.Expires_In);

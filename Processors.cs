@@ -57,7 +57,7 @@ namespace FitBananas
                 {"code", code},
                 {"grant_type", "authorization_code"}
             };
-            var listValues = new List<KeyValuePair<string,object>>();
+            var listValues = new List<KeyValuePair<string, object>>();
             // listValues.Add({"client_id", ClientInfo.myClientId});
 
             // AuthorizationJson content = new AuthorizationJson(code);
@@ -71,18 +71,19 @@ namespace FitBananas
             using (var response = await client.PostAsync(url, content))
             {
                 Console.WriteLine("Status Code: " + response.StatusCode);
-                AuthorizationModel result = await response.Content.ReadAsAsync<AuthorizationModel>();
-                return result;
-                // if (response.IsSuccessStatusCode)
-                // {
+                // build status code to meet our needs
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    AuthorizationModel result = await response.Content.ReadAsAsync<AuthorizationModel>();
+                    return result;
 
 
-                //     return result;
-                // }
-                // else
-                // {
-                //     throw new Exception(response.ReasonPhrase);
-                // }
+                    return result;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
             }
         }
     }

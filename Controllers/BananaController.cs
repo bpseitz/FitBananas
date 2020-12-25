@@ -24,7 +24,7 @@ namespace FitBananas.Controllers
         [HttpGet("home")]
         public IActionResult Home()
         {
-            HttpContext.Session.SetInt32("UserId", 1); // ***************************************Dev setting
+            HttpContext.Session.SetInt32("UserId", 3); // ***************************************Dev setting
             HomeViewModel homeViewModel = new HomeViewModel(_context, stravaId);
             return View(homeViewModel);
         }
@@ -32,7 +32,7 @@ namespace FitBananas.Controllers
         [HttpGet("new")]
         public IActionResult New()
         {
-            HttpContext.Session.SetInt32("UserId", 1); // ***************************************Dev setting
+            HttpContext.Session.SetInt32("UserId", 3); // ***************************************Dev setting
             NewChallengeViewModel viewModel = new NewChallengeViewModel(_context, stravaId);
             return View(viewModel);
         }
@@ -40,7 +40,7 @@ namespace FitBananas.Controllers
         [HttpGet("settings")]
         public IActionResult Settings()
         {
-            HttpContext.Session.SetInt32("UserId", 1); // ***************************************Dev setting
+            HttpContext.Session.SetInt32("UserId", 3); // ***************************************Dev setting
             int? userId = HttpContext.Session.GetInt32("UserId");
             SettingsViewModel viewModel = new SettingsViewModel(_context, userId ?? 0);
             return View(viewModel);
