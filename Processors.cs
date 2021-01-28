@@ -76,9 +76,6 @@ namespace FitBananas
                 {
                     AuthorizationModel result = await response.Content.ReadAsAsync<AuthorizationModel>();
                     return result;
-
-
-                    return result;
                 }
                 else
                 {
