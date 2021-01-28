@@ -26,6 +26,7 @@ namespace FitBananas.Controllers
             return View(modelView);
         }
 
+        [HttpGet("privacy")]
         public IActionResult Privacy()
         {
             return View();
