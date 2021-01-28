@@ -100,7 +100,7 @@
                                 style='width: @($"{progress}%")' aria-valuenow='@($"{progress}%")' aria-valuemin="0"
                                 aria-valuemax="100"></div>
                         </div>
-                        <p class="mb-1">@(challenge.Goal - progress) feet @onPace schedule!</p>
+                        <p class="mb-1">@(Math.Abs(diff)) feet @onPace schedule!</p>
                         <p class="mb-1">Average Daily Elevation Gain: @averageGain feet</p>
                         <p>Average Daliy Elevation Gain to completion: @averageGainToComplete feet</p>
                     </div>
@@ -168,7 +168,7 @@
                                 style='width: @($"{distanceProgress}%")' aria-valuenow='@($"{distanceProgress}%")' aria-valuemin="0"
                                 aria-valuemax="100"></div>
                         </div>
-                        <p class="mb-1">@(distanceGoal - distanceProgress) miles @distanceOnPace schedule!</p>
+                        <p class="mb-1">@(Math.Abs(distanceDiff)) miles @distanceOnPace schedule!</p>
                         <p class="mb-1">Average Daily Miles: @averageDistance miles</p>
                         <p>Average Daliy Miles to completion: @averageDistanceToComplete miles</p>
                     </div>
