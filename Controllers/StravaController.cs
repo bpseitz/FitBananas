@@ -21,9 +21,9 @@ namespace FitBananas.Controllers
         [HttpGet("exchange_token/")]
         public IActionResult ExchangeToken(string state, string code, string scope)
         {
-            Console.WriteLine($"Echange Token State: {state}");
-            Console.WriteLine($"Echange Token Code: {code}");
-            Console.WriteLine($"Echange Token Scope: {scope}");
+            Console.WriteLine($"Exchange Token State: {state}");
+            Console.WriteLine($"Exchange Token Code: {code}");
+            Console.WriteLine($"Exchange Token Scope: {scope}");
 
             // send post request to strava api with code
             // to receive the access token and refresh token
@@ -35,15 +35,57 @@ namespace FitBananas.Controllers
             newToken.ExpiresIn = TimeSpan.FromSeconds(authModel.Expires_In);
             newToken.RefreshToken = authModel.Refresh_Token;
             newToken.AccessToken = authModel.Access_Token;
+            
+            Athlete dbAthlete = _context.Athletes
+                .FirstOrDefault(athlete => athlete.Id == authModel.Athlete.Id);
+            int userId;
+            if (dbAthlete == null)
+            {
+                userId = CreateAthlete(authModel.Athlete, newToken);
+            }
+            else
+            {
+                userId = dbAthlete.AthleteId;
+                Token dbToken = _context.Tokens
+                    .FirstOrDefault(token => token.TokenId == dbAthlete.TokenId);
+                dbToken.ExpiresAt = newToken.ExpiresAt;
+                dbToken.ExpiresIn = newToken.ExpiresIn;
+                dbToken.RefreshToken = newToken.RefreshToken;
+                dbToken.AccessToken = newToken.AccessToken;
+                _context.SaveChanges();
+            }
+            HttpContext.Session.SetInt32("UserId", userId);
+        
+            return RedirectToAction("Home", "Banana");
+        }
+
+        public int CreateAthlete(Athlete newAthlete, Token newToken)
+        {
             _context.Add(newToken);
             _context.SaveChanges();
+            newAthlete.TokenId = newToken.TokenId;
+            
+            _context.Add(newAthlete);
+            _context.SaveChanges();
+            
+            var newAthleteStats = new AthleteStats();
+            newAthleteStats.AthleteId = newAthlete.AthleteId;
+            _context.Add(newAthleteStats);
+            _context.SaveChanges();
 
-            Athlete currentAthlete = authModel.Athlete;
-            currentAthlete.TokenId = newToken.TokenId;
-            int userId = UpdateAthlete(currentAthlete, newToken.AccessToken);
-            HttpContext.Session.SetInt32("UserId", userId);
+            int newAthleteStatsId = newAthleteStats.AthleteStatsId;
+            var newBikeTotal = new BikeTotal();
+            newBikeTotal.AthleteStatsId = newAthleteStatsId;
+            _context.Add(newBikeTotal);
+            var newRunTotal = new RunTotal();
+            newRunTotal.AthleteStatsId = newAthleteStatsId;
+            _context.Add(newRunTotal);
+            var newSwimTotal = new SwimTotal();
+            newSwimTotal.AthleteStatsId = newAthleteStatsId;
+            _context.Add(newSwimTotal);
+            _context.SaveChanges();
 
-            return RedirectToAction("Home", "Banana");
+            return newAthlete.AthleteId;
         }
 
         public int UpdateAthlete(Athlete currentAthlete, string accessToken)
@@ -80,7 +122,7 @@ namespace FitBananas.Controllers
             }
             else
             {
-                // Update user's totals in the databaase
+                // Update user's totals in the database
                 // Get the Total that belongs to the UserStats of the User 
                 BikeTotal bikeTotalToUpdate = _context.BikeTotals
                     .Include(bikeTotal => bikeTotal.UserStats)

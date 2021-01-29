@@ -58,13 +58,7 @@ namespace FitBananas
                 {"grant_type", "authorization_code"}
             };
             var listValues = new List<KeyValuePair<string, object>>();
-            // listValues.Add({"client_id", ClientInfo.myClientId});
-
-            // AuthorizationJson content = new AuthorizationJson(code);
-            // string json = JsonConvert.SerializeObject(content);
-            // var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-            // Console.WriteLine(stringContent);
-            // using (HttpResponseMessage response = await ApiHelper.ApiClient.PostAsync(url, stringContent))
+            
             var content = new FormUrlEncodedContent(postValues);
             Console.WriteLine("Authorization running");
             Console.WriteLine(content);
