@@ -57,16 +57,16 @@
                 int total;
                 if (challenge.ActivityType == "Run")
                 {
-                    total = runTotal.ElevationGainToFeet();
+                    total = runTotal.Elevation_Gain;
                 }
                 else
                 {
-                    total = bikeTotal.ElevationGainToFeet();
+                    total = bikeTotal.Elevation_Gain;
                 }
                 <div class="row mb-4">
                     <div class="col-md-8 card bg-secondary text-light">
                         <h4>@challenge.Title</h4>
-                        <p class="text-center mb-0">@total of @challenge.Goal feet</p>
+                        <p class="text-center mb-0">@total of @challenge.Goal meters</p>
                         @{
                             int progress;
                             if (total >= challenge.Goal)
@@ -100,9 +100,9 @@
                                 style='width: @($"{progress}%")' aria-valuenow='@($"{progress}%")' aria-valuemin="0"
                                 aria-valuemax="100"></div>
                         </div>
-                        <p class="mb-1">@(challenge.Goal - progress) feet @onPace schedule!</p>
-                        <p class="mb-1">Average Daily Elevation Gain: @averageGain feet</p>
-                        <p>Average Daliy Elevation Gain to completion: @averageGainToComplete feet</p>
+                        <p class="mb-1">@(Math.Abs(diff)) meters @onPace schedule!</p>
+                        <p class="mb-1">Average Daily Elevation Gain: @averageGain meters</p>
+                        <p>Average Daliy Elevation Gain to completion: @averageGainToComplete meters</p>
                     </div>
                     <div class="col d-none d-md-block">
                         <img class="img-fluid"
@@ -168,7 +168,7 @@
                                 style='width: @($"{distanceProgress}%")' aria-valuenow='@($"{distanceProgress}%")' aria-valuemin="0"
                                 aria-valuemax="100"></div>
                         </div>
-                        <p class="mb-1">@(distanceGoal - distanceProgress) miles @distanceOnPace schedule!</p>
+                        <p class="mb-1">@(Math.Abs(distanceDiff)) miles @distanceOnPace schedule!</p>
                         <p class="mb-1">Average Daily Miles: @averageDistance miles</p>
                         <p>Average Daliy Miles to completion: @averageDistanceToComplete miles</p>
                     </div>
