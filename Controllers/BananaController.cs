@@ -45,6 +45,33 @@ namespace FitBananas.Controllers
             return View(viewModel);
         }
 
+        [HttpGet("settings/purge")]
+        public IActionResult Purge()
+        {
+            int athleteId = HttpContext.Session.GetInt32("AthleteId") ?? 0;
+            Token token = _context.Athletes
+                .Include(athlete => athlete.Token)
+                .FirstOrDefault(athlete => athlete.AthleteId == athleteId)
+                .Token;
+            // If token expires with one hour, refresh token
+            if (token.ExpiresAt < DateTime.Now.AddSeconds(3600)) {
+                AuthorizationModel tokenModel = StravaController
+                    .loadNewToken(token.RefreshToken).Result;
+                token.AccessToken = tokenModel.Access_Token;
+                token.RefreshToken = tokenModel.Refresh_Token;
+                token.ExpiresAt = DateTime.Now.AddSeconds(tokenModel.Expires_In);
+                token.ExpiresIn = TimeSpan.FromSeconds(tokenModel.Expires_In);
+            }
+            Processor.Deauthorization(token.AccessToken);
+            Athlete athleteToDelete = _context.Athletes
+                .FirstOrDefault(athlete => athlete.AthleteId == athleteId);
+            _context.Remove(athleteToDelete);
+            _context.Remove(token);
+            _context.SaveChanges();
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpGet("signout")]
         public IActionResult SignOut()
         {

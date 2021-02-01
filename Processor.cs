@@ -107,5 +107,30 @@ namespace FitBananas
                 }
             }
         }
+
+        public static async void Deauthorization(string accessToken)
+        {
+            string url = $"https://www.strava.com/oauth/deauthorize";
+            var postValues = new Dictionary<string, string>{
+                {"access_token", accessToken}
+            };
+            
+            var content = new FormUrlEncodedContent(postValues);
+            Console.WriteLine("Purge");
+            Console.WriteLine(content);
+            using (var response = await client.PostAsync(url, content))
+            {
+                Console.WriteLine("Status Code: " + response.StatusCode);
+                // build status code to meet our needs
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    Console.WriteLine("Application access revoked on Strava");
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }
