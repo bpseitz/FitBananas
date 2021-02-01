@@ -9,6 +9,8 @@ namespace FitBananas.Models
     {
         public string AthleteName { get; set; }
 
+        public bool AthleteUnits { get; set; }
+
         public AthleteStats CurrentStats { get; set; }
         public List<Challenge> AthleteChallenges { get; set; }
         public int DaysRemaining { get; set; }
@@ -34,6 +36,9 @@ namespace FitBananas.Models
             
             // store the athletes name
             AthleteName = dbAthlete.FirstName;
+
+            // store the athletes units
+            AthleteUnits = dbAthlete.MetricUnits;
 
             // calculate and store the number of days remaining in the year
             var endOfYear = new DateTime(2022,01,01);

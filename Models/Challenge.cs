@@ -13,8 +13,10 @@ namespace FitBananas.Models
 
         public string ActivityType { get; set; }
 
+        // options: Swim, Bike, Run
         public string ChallengeType { get; set; }
 
+        // in meters
         public int Goal { get; set; }
 
         public string ImageFileName { get; set; }
@@ -23,5 +25,19 @@ namespace FitBananas.Models
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         public List<AthleteChallenge> Athletes { get; set; }
+
+        public int GoalToImperial()
+        {
+            // convert to feet
+            if(ChallengeType == "ElevationGain")
+            {
+                return (int)(Goal * 3.28084);
+            }
+            // convert to miles
+            else
+            {
+                return (int)(Goal/1609.34);
+            };
+        }
     }
 }
