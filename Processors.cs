@@ -77,7 +77,7 @@ namespace FitBananas
             }
         }
         
-        public static async Task<RefreshExpiredTokenModel> RefreshExpiredToken(string refreshToken)
+        public static async Task<AuthorizationModel> RefreshExpiredToken(string refreshToken)
         {
             string url = $"https://www.strava.com/oauth/token";
             var postValues = new Dictionary<string, string>{
@@ -88,7 +88,7 @@ namespace FitBananas
             };
             
             var content = new FormUrlEncodedContent(postValues);
-            Console.WriteLine("Authorization running");
+            Console.WriteLine("Refreshing Expired Token");
             Console.WriteLine(content);
             using (var response = await client.PostAsync(url, content))
             {
@@ -96,9 +96,9 @@ namespace FitBananas
                 // build status code to meet our needs
                 if (response.StatusCode.ToString() == "OK")
                 {
-                    RefreshExpiredTokenModel result = await response
+                    AuthorizationModel result = await response
                         .Content
-                        .ReadAsAsync<RefreshExpiredTokenModel>();
+                        .ReadAsAsync<AuthorizationModel>();
                     return result;
                 }
                 else

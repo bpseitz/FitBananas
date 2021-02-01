@@ -48,6 +48,7 @@ namespace FitBananas.Controllers
         [HttpGet("signout")]
         public IActionResult SignOut()
         {
+            HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
 
@@ -99,7 +100,7 @@ namespace FitBananas.Controllers
                 .Token;
             // If token expires with one hour, refresh token
             if (token.ExpiresAt < DateTime.Now.AddSeconds(3600)) {
-                RefreshExpiredTokenModel tokenModel = StravaController
+                AuthorizationModel tokenModel = StravaController
                     .loadNewToken(token.RefreshToken).Result;
                 token.AccessToken = tokenModel.Access_Token;
                 token.RefreshToken = tokenModel.Refresh_Token;

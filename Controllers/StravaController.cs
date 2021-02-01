@@ -105,7 +105,7 @@ namespace FitBananas.Controllers
             return await Processor.Authorization(code);
         }
         
-        public static async Task<RefreshExpiredTokenModel> loadNewToken(string refreshToken)
+        public static async Task<AuthorizationModel> loadNewToken(string refreshToken)
         {
             return await Processor.RefreshExpiredToken(refreshToken);
         }
