@@ -8,6 +8,10 @@ namespace FitBananas.Models
         [Key]
         public int BikeTotalId { get; set; }
         public int Distance { get; set; }
+
+        // we use the underscore to separate words,
+        //because newtonsoft fits the data to the field name from the json package
+        // and strava provides us with the data using underscores
         public int Elevation_Gain { get; set; }
 
         public DateTime CreatedAt{ get; set; } = DateTime.Now;

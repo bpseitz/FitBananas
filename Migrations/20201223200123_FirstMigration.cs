@@ -9,23 +9,6 @@ namespace FitBananas.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Athletes",
-                columns: table => new
-                {
-                    AthleteId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Id = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Athletes", x => x.AthleteId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Challenges",
                 columns: table => new
                 {
@@ -45,23 +28,45 @@ namespace FitBananas.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AthleteStatsSets",
+                name: "Tokens",
                 columns: table => new
                 {
-                    AthleteStatsId = table.Column<int>(nullable: false)
+                    TokenId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ExpiresAt = table.Column<DateTime>(nullable: false),
+                    ExpiresIn = table.Column<TimeSpan>(nullable: false),
+                    RefreshToken = table.Column<string>(nullable: true),
+                    AccessToken = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false),
-                    AthleteId = table.Column<int>(nullable: false)
+                    UpdatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AthleteStatsSets", x => x.AthleteStatsId);
+                    table.PrimaryKey("PK_Tokens", x => x.TokenId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Athletes",
+                columns: table => new
+                {
+                    AthleteId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    MetricUnits = table.Column<bool>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    TokenId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Athletes", x => x.AthleteId);
                     table.ForeignKey(
-                        name: "FK_AthleteStatsSets_Athletes_AthleteId",
-                        column: x => x.AthleteId,
-                        principalTable: "Athletes",
-                        principalColumn: "AthleteId",
+                        name: "FK_Athletes_Tokens_TokenId",
+                        column: x => x.TokenId,
+                        principalTable: "Tokens",
+                        principalColumn: "TokenId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -90,6 +95,27 @@ namespace FitBananas.Migrations
                         column: x => x.ChallengeId,
                         principalTable: "Challenges",
                         principalColumn: "ChallengeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AthleteStatsSets",
+                columns: table => new
+                {
+                    AthleteStatsId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    AthleteId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AthleteStatsSets", x => x.AthleteStatsId);
+                    table.ForeignKey(
+                        name: "FK_AthleteStatsSets_Athletes_AthleteId",
+                        column: x => x.AthleteId,
+                        principalTable: "Athletes",
+                        principalColumn: "AthleteId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -146,7 +172,6 @@ namespace FitBananas.Migrations
                     SwimTotalId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Distance = table.Column<int>(nullable: false),
-                    Elevation_Gain = table.Column<int>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     AthleteStatsId = table.Column<int>(nullable: false)
@@ -171,6 +196,11 @@ namespace FitBananas.Migrations
                 name: "IX_AthleteChallenges_ChallengeId",
                 table: "AthleteChallenges",
                 column: "ChallengeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Athletes_TokenId",
+                table: "Athletes",
+                column: "TokenId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AthleteStatsSets_AthleteId",
@@ -219,6 +249,9 @@ namespace FitBananas.Migrations
 
             migrationBuilder.DropTable(
                 name: "Athletes");
+
+            migrationBuilder.DropTable(
+                name: "Tokens");
         }
     }
 }

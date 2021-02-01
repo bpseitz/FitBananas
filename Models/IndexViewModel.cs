@@ -32,15 +32,16 @@ namespace FitBananas.Models
                 .Sum());
 
 
-
-            AvgDistPledged = DistPledged / Participants;
-
             ElevGainPledged = allGoals.Select(goal => goal.ThisChallenge)
                 .Where(challenge => challenge.ChallengeType == "Elevation Gain")
                 .Select(challenge => challenge.Goal)
                 .Sum();
 
-            AvgElevGainPledged = ElevGainPledged / Participants;
+            if(Participants > 0)
+            {
+                AvgDistPledged = DistPledged / Participants;
+                AvgElevGainPledged = ElevGainPledged / Participants;
+            }
 
             var bikeDistanceCompleted = context.BikeTotals
                 .Select(total => total.Distance).Sum();

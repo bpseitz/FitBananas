@@ -19,5 +19,7 @@ namespace FitBananas.Models
 
         public List<AthleteChallenge> Challenges { get; set; }
 
+        public int TokenId { get; set; }
+        public Token Token { get; set; }
     }
 }

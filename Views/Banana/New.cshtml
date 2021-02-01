@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="~/css/bananaStyle.css">
 <nav class="navbar navbar-expand-md navbar-light bg-warning">
     <div class="container">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
@@ -30,7 +31,7 @@
 </nav>
 
 @model NewChallengeViewModel
-<main class="container">
+<main class="container p-5 mt-5">
     <div class="row justify-content-center">
         <h2 class="m-5 text-center">Add a new challenge</h2>
     </div>
@@ -62,7 +63,7 @@
                     <option value="" selected disabled hidden>Select Challenge:</option>
                     @foreach (var challenge in @Model.AllChallenges)
                     {
-                        if(challenge.Athletes.Any(athlete => athlete.ThisAthlete.Id == @Model.StravaId))
+                        if(challenge.Athletes.Any(athlete => athlete.ThisAthlete.AthleteId == @Model.AthleteId))
                         {
                             <option class="@challenge.ActivityType-@challenge.ChallengeType new-challenge" value="@challenge.ChallengeId" disabled>@challenge.Title</option>
 

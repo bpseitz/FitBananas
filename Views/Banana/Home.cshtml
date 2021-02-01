@@ -1,6 +1,8 @@
+<link rel="stylesheet" href="~/css/bananaStyle.css">
 @model HomeViewModel
 @{
     string name = Model.AthleteName;
+    bool units = Model.AthleteUnits;
     List<Challenge> challenges = Model.AthleteChallenges;
     BikeTotal bikeTotal = Model.CurrentStats.YTD_Ride_Totals;
     RunTotal runTotal = Model.CurrentStats.YTD_Run_Totals;
@@ -38,7 +40,7 @@
         </div>
     </div>
 </nav>
-<main class="container">
+<main class="container p-5 mt-5">
     <div class="row m-5">
         <div class="col-auto me-auto">
             <h1>@name's @DateTime.Now.Year Challenges</h1>
@@ -51,133 +53,117 @@
     {
         foreach (var challenge in challenges)
         {
-            if (challenge.ChallengeType == "Elevation Gain")
+            // create variables that will be dependent upon the challenge type and units
+            int total, progress, goal;
+            string challengeUnits;
+            // set total for if the athletes preference is metric units
+            if (units)
             {
-                int total;
-                if (challenge.ActivityType == "Run")
+                if (challenge.ChallengeType == "Elevation Gain")
                 {
-                    total = runTotal.ElevationGainToFeet();
+                    goal = challenge.Goal;
+                    challengeUnits = "meters";
+                    if(challenge.ActivityType == "Run")
+                    {
+                        total = runTotal.Elevation_Gain;
+                    }
+                    else
+                    {
+                        total = bikeTotal.Elevation_Gain;
+                    }
                 }
                 else
                 {
-                    total = bikeTotal.ElevationGainToFeet();
+                    // convert goal from meters to kilometers
+                    goal = challenge.Goal / 1000;
+                    challengeUnits = "kilometers";
+                    switch (challenge.ActivityType)
+                    {
+                        case "Swim":
+                            total = swimTotal.Distance;
+                            break;
+                        case "Bike":
+                            total = bikeTotal.Distance;
+                            break;
+                        default:
+                            total = runTotal.Distance;
+                            break;
+                    }
+                    // convert total from meters to kilometers
+                    total = total / 1000;
+                };
+            }
+            // set total for if athlete's preference is imperial units
+            else
+            {
+                goal = challenge.GoalToImperial();
+                if (challenge.ChallengeType == "Elevation Gain")
+                {
+                    challengeUnits = "feet";
+                    switch (challenge.ActivityType)
+                    {
+                        case "Run":
+                            total = runTotal.ElevationGainToFeet();
+                            break;
+                        default:
+                            total = bikeTotal.ElevationGainToFeet();
+                            break;
+                    }
                 }
-                <div class="row mb-4">
-                    <div class="col-md-8 card">
-                        <h4>@challenge.Title</h4>
-                        <p class="text-center mb-0">@total of @challenge.Goal feet</p>
-                        @{
-                            int progress;
-                            if (total >= challenge.Goal)
-                            {
-                                progress = 100;
-                            }
-                            else
-                            {
-                                progress = (int)((float)total / challenge.Goal * 100);
-                            }
-                            int averageGain = total / DateTime.Now.DayOfYear;
-                            int averageGainToComplete = (challenge.Goal - total) / daysRemaining;
-                            if (averageGainToComplete < 0) { averageGainToComplete = 0; }
-                            int onPaceTotal = (int)((float)challenge.Goal / 365 * DateTime.Now.DayOfYear);
-                            int diff = onPaceTotal - total;
-                            string color;
-                            string onPace;
-                            if (diff <= 0)
-                            {
-                                color = "success";
-                                onPace = "ahead";
-                            }
-                            else 
-                            {
-                                color = "danger";
-                                onPace = "behind";
-                            }
-                        }
-                        <div class="progress mb-3">
-                            <div class="progress-bar progress-bar-striped bg-@color" role="progressbar"
-                                style='width: @($"{progress}%")' aria-valuenow='@($"{progress}%")' aria-valuemin="0"
-                                aria-valuemax="100"></div>
-                        </div>
-                        <p class="mb-1">@(challenge.Goal - progress) feet @onPace schedule!</p>
-                        <p class="mb-1">Average Daily Elevation Gain: @averageGain feet</p>
-                        <p>Average Daliy Elevation Gain to completion: @averageGainToComplete feet</p>
-                    </div>
-                    <div class="col d-none d-md-block">
-                        <img class="img-fluid"
-                            src="~/img/challengeImages/@challenge.ImageFileName"
-                            alt="challenge image">
-                    </div>
-                </div>
+                else
+                {
+                    challengeUnits = "miles";
+                    switch (challenge.ActivityType)
+                    {
+                        case "Swim":
+                            total = swimTotal.DistanceToMiles();
+                            break;
+                        case "Bike":
+                            total = bikeTotal.DistanceToMiles();
+                            break;
+                        default:
+                            total = runTotal.DistanceToMiles();
+                            break;
+                    }
+                };
+            };
+            // set progress for progress bar
+            progress = Math.Min(100, (int)((float)total / goal * 100));
+
+
+            int averageTotal = total / DateTime.Now.DayOfYear;
+            // calculate average remaining distance to complete
+            int averageToComplete = Math.Max(0, (goal - total) / daysRemaining);
+            int onPaceTotal = (int)((float)goal / 365 * DateTime.Now.DayOfYear);
+            int diffTotal = onPaceTotal - total;
+            string color, onPace;
+            if (diffTotal <= 0)
+            {
+                color = "success";
+                onPace = "ahead";
             }
             else
             {
-                int distanceTotal;
-                switch (challenge.ActivityType)
-                {
-                    case "Run":
-                        distanceTotal = runTotal.DistanceToMiles();
-                        break;
-
-                    case "Bike":
-                        distanceTotal = bikeTotal.DistanceToMiles();
-                        break;
-
-                    default:
-                        distanceTotal = swimTotal.DistanceToMiles();
-                        break;
-
-                    
-                }
-                var distanceGoal = (int)(challenge.Goal / 1609.34); 
-                <div class="row mb-4">
-                    <div class="col-md-8 card">
-                        <h4>@challenge.Title</h4>
-                        <p class="text-center mb-0">@distanceTotal of @distanceGoal miles</p>
-                        @{
-                            int distanceProgress;
-                            if (distanceTotal>= distanceGoal)
-                            {
-                                distanceProgress = 100;
-                            }
-                            else
-                            {
-                                distanceProgress = (int)((float)distanceTotal/ distanceGoal * 100);
-                            }
-                            int averageDistance = distanceTotal/ DateTime.Now.DayOfYear;
-                            int averageDistanceToComplete = (distanceGoal - distanceTotal) / daysRemaining;
-                            if (averageDistanceToComplete < 0) { averageDistanceToComplete = 0; }
-                            int distanceOnPaceTotal = (int)((float)distanceGoal / 365 * DateTime.Now.DayOfYear);
-                            int distanceDiff = distanceOnPaceTotal - distanceTotal;
-                            string distanceColor;
-                            string distanceOnPace;
-                            if (distanceDiff <= 0)
-                            {
-                                distanceColor= "success";
-                                distanceOnPace = "ahead";
-                            }
-                            else 
-                            {
-                                distanceColor= "danger";
-                                distanceOnPace = "behind";
-                            }
-                        }
-                        <div class="progress mb-3">
-                            <div class="progress-bar progress-bar-striped bg-@distanceColor" role="progressbar"
-                                style='width: @($"{distanceProgress}%")' aria-valuenow='@($"{distanceProgress}%")' aria-valuemin="0"
-                                aria-valuemax="100"></div>
-                        </div>
-                        <p class="mb-1">@(distanceGoal - distanceProgress) miles @distanceOnPace schedule!</p>
-                        <p class="mb-1">Average Daily Miles: @averageDistance miles</p>
-                        <p>Average Daliy Miles to completion: @averageDistanceToComplete miles</p>
-                    </div>
-                    <div class="col d-none d-md-block">
-                        <img class="img-fluid"
-                            src="~/img/challengeImages/@challenge.ImageFileName"
-                            alt="Mount Rainier">
-                    </div>
-                </div>
+                color = "danger";
+                onPace = "behind";
             }
+            <div class="row mb-4">
+                <div class="col-md-8 card bg-secondary text-light">
+                    <h4>@challenge.Title</h4>
+                    <p class="text-center mb-0">@total of @goal @challengeUnits</p>
+                    <div class="progress mb-3">
+                        <div class="progress-bar progress-bar-striped bg-@color" role="progressbar"
+                            style='width: @($"{progress}%")' aria-valuenow='@($"{progress}%")' aria-valuemin="0"
+                            aria-valuemax="100"></div>
+                    </div>
+                    <p class="mb-1">@(Math.Abs(diffTotal)) @challengeUnits @onPace schedule!</p>
+                    <p class="mb-1">Average Daily @challenge.ChallengeType: @averageTotal @challengeUnits</p>
+                    <p>Average Daliy @challenge.ChallengeType to completion: @averageToComplete @challengeUnits</p>
+                </div>
+                <div class="col d-none d-md-block">
+                    <img class="img-fluid" src="~/img/challengeImages/@challenge.ImageFileName" alt="challenge image">
+                </div>
+            </div>
         }
     }
     else
