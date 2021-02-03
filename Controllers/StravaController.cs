@@ -89,12 +89,6 @@ namespace FitBananas.Controllers
             return newAthlete.AthleteId;
         }
 
-        public static async Task<Athlete> loadAthleteInfo()
-        {
-            return await Processor.LoadAthleteInformation();
-            
-        }
-
         public static async Task<AthleteStats> loadAthleteStats(int athleteId, string accessToken)
         {
             return await Processor.LoadAthleteStatsInfo(athleteId, accessToken);
