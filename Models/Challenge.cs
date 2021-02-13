@@ -29,7 +29,7 @@ namespace FitBananas.Models
         public int GoalToImperial()
         {
             // convert to feet
-            if(ChallengeType == "ElevationGain")
+            if(ChallengeType == "Elevation Gain")
             {
                 return (int)(Goal * 3.28084);
             }
