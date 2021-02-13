@@ -6,8 +6,8 @@
 trigger:
 - develop
 
-pool:
-  vmImage: ubuntu-default
+# pool:
+#   vmImage: ubuntu-default
 
 steps:
 - script: echo Hello, world!
