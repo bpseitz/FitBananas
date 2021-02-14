@@ -12,24 +12,7 @@ namespace FitBananas
     public class Processor
     {
         private static readonly HttpClient client = new HttpClient();
-        public static async Task<Athlete> LoadAthleteInformation()
-        {
-            string url = $"https://www.strava.com/api/v3/athlete?access_token={AccessToken.current}";
-            Console.WriteLine("Load Athlete info running");
-            using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url))
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    Athlete result = await response.Content.ReadAsAsync<Athlete>();
-
-                    return result;
-                }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
-            }
-        }
+        
         public static async Task<AthleteStats> LoadAthleteStatsInfo(int athleteId, string accessToken)
         {
             string url = $"https://www.strava.com/api/v3/athletes/{athleteId}/stats?access_token={accessToken}";

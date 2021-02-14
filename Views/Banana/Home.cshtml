@@ -150,15 +150,15 @@
             <div class="row mb-4">
                 <div class="col-md-8 card bg-secondary text-light">
                     <h4>@challenge.Title</h4>
-                    <p class="text-center mb-0">@total of @goal @challengeUnits</p>
+                    <p class="text-center mb-0">@String.Format("{0:n0}", total) of @String.Format("{0:n0}", goal) @challengeUnits</p>
                     <div class="progress mb-3">
                         <div class="progress-bar progress-bar-striped bg-@color" role="progressbar"
                             style='width: @($"{progress}%")' aria-valuenow='@($"{progress}%")' aria-valuemin="0"
                             aria-valuemax="100"></div>
                     </div>
-                    <p class="mb-1">@(Math.Abs(diffTotal)) @challengeUnits @onPace schedule!</p>
-                    <p class="mb-1">Average Daily @challenge.ChallengeType: @averageTotal @challengeUnits</p>
-                    <p>Average Daliy @challenge.ChallengeType to completion: @averageToComplete @challengeUnits</p>
+                    <p class="mb-1">@String.Format("{0:n0}", Math.Abs(diffTotal)) @challengeUnits @onPace schedule!</p>
+                    <p class="mb-1">Average Daily @challenge.ChallengeType: @String.Format("{0:n0}", averageTotal) @challengeUnits</p>
+                    <p>Average Daliy @challenge.ChallengeType to completion: @String.Format("{0:n0}", averageToComplete) @challengeUnits</p>
                 </div>
                 <div class="col d-none d-md-block">
                     <img class="img-fluid" src="~/img/challengeImages/@challenge.ImageFileName" alt="challenge image">
