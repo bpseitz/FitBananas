@@ -28,21 +28,21 @@
 
             <div>
                 <p class="lead mb-1" id="timeRemaining"></p>
-                <p class="lead mb-1">Participants: @Model.Participants</p>
-                <p class="lead">Goals set: @Model.GoalsSet</p>
+                <p class="lead mb-1">Participants: @String.Format("{0:n0}", Model.Participants)</p>
+                <p class="lead">Goals set: @String.Format("{0:n0}", Model.GoalsSet)</p>
             </div>
         </div>
     </div>
     <div class="row justify-content-center mb-5">
             <div class="box col-lg-4 p-3 m-3">
-                <p class="lead">Distance pledged: @Model.DistPledged miles</p>
-                <p class="lead">Avg distance pledged: @Model.AvgDistPledged miles</p>
-                <p class="lead">Distance Completed: @Model.DistanceCompleted miles</p>
+                <p class="lead">Distance pledged: @String.Format("{0:n0}", Model.DistPledged) miles</p>
+                <p class="lead">Avg distance pledged: @String.Format("{0:n0}", Model.AvgDistPledged) miles</p>
+                <p class="lead">Distance Completed: @String.Format("{0:n0}", Model.DistanceCompleted) miles</p>
             </div>
             <div class="box col-lg-4 p-3 m-3">
-                <p class="lead">Elevation gained pledged: @Model.ElevGainPledged feet</p>
-                <p class="lead">Avg Elevation gain pledged: @Model.AvgElevGainPledged feet</p>
-                <p class="lead">Elevation Gain Completed: @Model.ElevationGainCompleted feet</p>
+                <p class="lead">Elevation gained pledged: @String.Format("{0:n0}", Model.ElevGainPledged) feet</p>
+                <p class="lead">Avg Elevation gain pledged: @String.Format("{0:n0}", Model.AvgElevGainPledged) feet</p>
+                <p class="lead">Elevation Gain Completed: @String.Format("{0:n0}", Model.ElevationGainCompleted) feet</p>
             </div>
 
     </div>
